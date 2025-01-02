@@ -23,24 +23,6 @@ dataset_structure = '''
 '''
 st.code(dataset_structure, language="python")
 
-# 选择原始数据格式
-file_format = st.selectbox("Please select the original format:", ("nii.gz / nrrd", "jpg/png"))
-
-# 输入图像路径和掩膜路径
-img_column, mask_column = st.columns(2)
-with img_column:
-    image_path = st.text_input("Please enter the image path:", key="image_path_input")
-with mask_column:
-    mask_path = st.text_input("Please enter the mask path:", key="mask_path_input")
-
-# 选择特征提取的类型
-selected_types = st.multiselect(
-    "Select filter type:",
-    ["All", "Original", "Wavelet", "Square", "SquareRoot", "Logarithm",
-     "Exponential", "Gradient", "LoG", "LBP2D", "LBP3D"]
-)
-
-
 # 特征提取的函数
 def extract_features(image_folder, mask_folder):
     """提取图像和掩膜的放射学特征"""
@@ -92,9 +74,23 @@ def extract_features(image_folder, mask_folder):
             continue
 
     # 删除一些无用的列
-    feature_df.drop(columns=feature_df.columns[1:38], axis=1, inplace=True)
-    return feature_df
+    # feature_df.drop(columns=feature_df.columns[1:38], axis=1, inplace=True)
+    # return feature_df
 
+
+# 输入图像路径和掩膜路径
+img_column, mask_column = st.columns(2)
+with img_column:
+    image_path = st.text_input("Please enter the image path:", key="image_path_input")
+with mask_column:
+    mask_path = st.text_input("Please enter the mask path:", key="mask_path_input")
+
+# 选择特征提取的类型
+selected_types = st.multiselect(
+    "Select filter type:",
+    ["All", "Original", "Wavelet", "Square", "SquareRoot", "Logarithm",
+     "Exponential", "Gradient", "LoG", "LBP2D", "LBP3D"]
+)
 
 # 设置特征提取器的参数
 sigma_1, sigma_2, sigma_3, sigma_4, sigma_5 = st.columns(5)
